@@ -29,7 +29,9 @@ class CustomUser(AbstractUser):
     - Supports optional phone numbers.
     - Enables reader subscriptions to publishers and journalists.
     """
-
+    """
+    Custom user object inherited from AbstractUser class, to have more suited fields.
+    """
     ROLE_CHOICES = (
         ('reader', 'Reader'),
         ('editor', 'Editor'),

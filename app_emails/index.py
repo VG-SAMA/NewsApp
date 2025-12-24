@@ -117,6 +117,15 @@ class SendingEmails_SendingTweets:
             dict: Dictionary containing tweet text.
         """
 
+        """
+        This fuction checks the length of the message being posted
+        on twitter, becasue there is a certain limit to characters
+        that can be posted. I assume becasue its the free service.
+
+        :param article: An article object to access its fields
+
+        :returns: Dictionary so the twitter api can access the 'text' key
+        """
         max_length = 150
         content_limit = max_length - 50
 
