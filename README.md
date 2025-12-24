@@ -21,7 +21,7 @@ This project is a news platform built with Django, designed to allow readers, jo
 
 # Tech Stack
 - Backend: Django 5.x
-- Database: MySQL
+- Database: SQLite to work with docker
 - Frontend: Django Templates + Bootstrap 5
 - API: Django REST Framework
 - Authentication: Django custom user model with roles
@@ -30,7 +30,6 @@ This project is a news platform built with Django, designed to allow readers, jo
 # Installation
 ## Prerequisites
 - Python 3.11+
-- MySQL 8.x
 - pip (Python package manager)
 
 # Setting Up
@@ -48,7 +47,7 @@ This project is a news platform built with Django, designed to allow readers, jo
 - Install dependancies:
   - pip install -r requirements.txt
 
-# Update newsApp/settings.py database configuration to match your MySQL instance or MariaDB
+# Update newsApp/settings.py database configuration to match your MySQL instance or MariaDB if you are not running with docker
 1. MySQL Setup
     Install MySQL (if not installed):
         On Windows, download the installer from https://dev.mysql.com/downloads/mysql/
@@ -266,3 +265,12 @@ Only one authenticated instance is created at app runtime (singleton pattern). T
 
 Please view a picture called Proof Of Suspension.PNG, to see the message at the bottom of the picture showing
 my account is currently suspended
+
+
+# Running with Docker
+- Build the Docker image:
+    Build the Docker image:
+- Run the Docker container:
+    Run the Docker container:
+    The container automatically runs migrations and starts the Django server.
+    Access the app at http://localhost:8000
