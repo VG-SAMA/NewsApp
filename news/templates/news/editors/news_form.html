@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block nav_heading %}Edit Newsletter{% endblock %}
+
+{% block content %}
+<div class="container mt-2">
+    {% if form.instance.pk %}
+        <a href="{% url 'news:editors_view_newsletter' pk=form.instance.pk %}" class="btn btn-warning">Back</a>
+    {% endif %}
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <!-- Publisher (read-only) -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Publisher</label>
+                    <div class="form-control bg-light">
+                        {{ newsletter.publisher.name }}
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Newsletter Title</label>
+                    {{ form.title|add_class:"form-control form-control-lg" }}
+                </div>
+
+                <!-- Search -->
+                <div class="mb-4">
+                    <input type="text" class="form-control"
+                           placeholder="Search articles..."
+                           id="articleSearch">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Grid -->
+    <div class="container">
+        <div class="row">
+            {% for article in form.fields.articles.queryset %}
+            <div class="col-md-6 mb-3 article-card">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+
+                        <div class="form-check mb-2">
+                            <input type="checkbox"
+                                   name="articles"
+                                   value="{{ article.id }}"
+                                   class="form-check-input"
+                                   {% if article in form.instance.articles.all %}checked{% endif %}>
+                        </div>
+
+                        <h6>
+                            <a href="{% url 'news:editors_view_article' pk=article.id %}"
+                               target="_blank"
+                               class="text-decoration-none">
+                                {{ article.title }}
+                            </a>
+                        </h6>
+
+                        <small class="text-muted">
+                            By {{ article.made_by_journalist.username }}
+                        </small>
+                        <br>
+                        
+                        <small class="text-muted">                            
+                            {{ article.created_at|date:"M d, Y" }}
+                        </small>
+                        <br>
+                        
+                        <small class="text" style="color:red">
+                            {{ article.publisher }}
+                            
+                        </small>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="container mt-4">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary btn-lg">
+                Update Newsletter
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+document.getElementById("articleSearch").addEventListener("keyup", function () {
+    const query = this.value.toLowerCase();
+    document.querySelectorAll(".article-card").forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query)
+            ? "block"
+            : "none";
+    });
+});
+</script>
+{% endblock %}

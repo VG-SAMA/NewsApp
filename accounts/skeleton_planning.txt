@@ -1,0 +1,8 @@
+User needs to see the homepage of the news app this can be done once news articles are done
+
+1. User needs to see a register page - done
+2. user needs to see a login page - done
+3. once logged in authenticate and check permissions then redirect them accordin
+to there role eg, reader goes to news paeg etc.. - done
+
+4. make decorators for roles and permissions - done

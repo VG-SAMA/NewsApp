@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block nav_heading %}Newsletter Form{% endblock nav_heading %}
+
+{% block content %}
+{% if form.non_field_errors %}
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<div class="container mt-2">
+    {% if form.instance.pk %}
+        <a href="{% url 'news:journalists_view_newsletter' pk=form.instance.pk %}" class="btn btn-warning">Back</a>
+    {% endif %}
+</div>
+<form method="post"
+action="{% if newsletter %}{% url 'news:journalists_update_newsletter' pk=newsletter.id %}{% endif %}">
+    {% csrf_token %}
+
+    <!-- Container for the top form -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <!-- Newsletter Title -->
+                <div class="mb-4">
+                    <label for="{{ form.title.id_for_label }}" class="form-label fw-bold">
+                        Newsletter Title
+                    </label>
+                    {{ form.title|add_class:"form-control form-control-lg" }}
+                </div>
+
+                <!-- Independent Checkbox -->
+                <div class="form-check mb-4">
+                    {{ form.is_independant }}
+                    <label class="form-check-label" for="{{ form.is_independant.id_for_label }}">
+                        Independent Newsletter
+                    </label>
+                </div>
+
+                <!-- Publisher Select -->
+                <div class="mb-4" id="publisherField">
+                    <label for="{{ form.publisher.id_for_label }}" class="form-label fw-bold">
+                        Select Publisher
+                    </label>
+                    {{ form.publisher|add_class:"form-select" }}
+                </div>
+
+                <!-- Search Articles -->
+                <div class="mb-4">
+                    <input type="text" class="form-control" placeholder="Search articles..." id="articleSearch">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Article Grid -->
+    <div class="container">
+        <div class="row" id="articleGrid">
+            {% for a in articles %}
+            <div class="col-md-6 mb-3 article-card"
+                 data-publisher-id="{{ a.publisher.id|default:'' }}"
+                 data-journalist-id="{{ a.made_by_journalist.id }}"
+                 data-is-independant="{{ a.is_independant }}">
+                 
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="form-check mb-2">
+                            <input type="checkbox" name="articles" value="{{ a.id }}" 
+       class="form-check-input"
+       {% if a in form.instance.articles.all %}checked{% endif %}>
+                        </div>
+                        <h6>
+                            <a href="{% url 'news:journalists_view_article' pk=a.id %}" target="_blank" class="text-decoration-none">
+                                {{ a.title }}
+                            </a>
+                        </h6>
+                        <small class="text-muted">{{ a.created_at|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="container mt-4">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-envelope-plus"></i> {% if form.instance.id %}Update {% else %} Create {% endif %}Newsletter
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<script>
+const isIndependant = document.getElementById("id_is_independant");
+const publisherField = document.getElementById("publisherField");
+const publisherSelect = document.getElementById("id_publisher");
+
+// Reset all checkboxes
+function resetArticleSelection() {
+    document.querySelectorAll(".article-card input[type='checkbox']").forEach(cb => {
+        cb.checked = false;
+    });
+}
+
+// Show/hide publisher and filter articles
+function togglePublisherField() {
+    publisherField.style.display = isIndependant.checked ? "none" : "block";
+    // Only reset selection if user manually changed the checkbox
+    if (!window.initialLoadDone) {
+        window.initialLoadDone = true;
+    } else {
+        resetArticleSelection();
+    }
+    filterArticles();
+}
+
+
+// Filter article cards based on newsletter type
+function filterArticles() {
+    const independent = isIndependant.checked;
+    const selectedPublisher = publisherSelect ? publisherSelect.value : "";
+
+    document.querySelectorAll(".article-card").forEach(card => {
+        const cardPublisherId = card.dataset.publisherId;
+        const cardJournalistId = card.dataset.journalistId;
+        const cardIsIndependant = card.dataset.isIndependant === "True";
+
+        if (independent) {
+            // Show only the journalists  independent articles
+            card.style.display = (cardJournalistId == "{{ request.user.id }}" && cardIsIndependant)
+                ? "block"
+                : "none";
+        } else if (selectedPublisher) {
+            // show only articles for  the selected publisher
+            card.style.display = (cardPublisherId == selectedPublisher)
+                ? "block"
+                : "none";
+        } else {
+            // hides all if filtere is not selected
+            card.style.display = "none";
+        }
+    });
+}
+
+// Event listeners
+isIndependant.addEventListener("change", togglePublisherField);
+if (publisherSelect) {
+    publisherSelect.addEventListener("change", () => {
+        resetArticleSelection();
+        filterArticles();
+    });
+}
+
+// Run on load
+window.addEventListener("load", togglePublisherField);
+
+// Article search
+document.getElementById("articleSearch").addEventListener("keyup", function () {
+    const query = this.value.toLowerCase();
+
+    document.querySelectorAll(".article-card").forEach(card => {
+        const independent = isIndependant.checked;
+        const selectedPublisher = publisherSelect ? publisherSelect.value : "";
+        const cardPublisherId = card.dataset.publisherId;
+        const cardJournalistId = card.dataset.journalistId;
+        const cardIsIndependant = card.dataset.isIndependant === "True";
+
+        // First, apply filtering rules
+        let showCard = false;
+        if (independent) {
+            showCard = (cardJournalistId == "{{ request.user.id }}" && cardIsIndependant);
+        } else if (selectedPublisher) {
+            showCard = (cardPublisherId == selectedPublisher);
+        }
+
+        // Then, apply search on top of the filter
+        if (showCard) {
+            showCard = card.innerText.toLowerCase().includes(query);
+        }
+
+        card.style.display = showCard ? "block" : "none";
+    });
+});
+
+</script>
+
+{% endblock %}

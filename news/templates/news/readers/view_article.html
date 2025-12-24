@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block nav_heading %}
+    Article Preview
+{% endblock nav_heading %}
+
+{% block content %}
+<div class="container mt-5 mb-3" style="max-width: 900px;">
+
+    <!-- Article Card -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+            <!-- Title -->
+            <h2 class="fw-bold mb-2">
+                {{ article.title }}
+            </h2>
+
+            <!-- Info -->
+            <div class="text-muted small mb-3 d-flex flex-wrap gap-3">
+                <span>
+                    <i class="bi bi-person"></i>
+                    {{ article.made_by_journalist.username }}
+                </span>
+
+                <span>
+                    <i class="bi bi-calendar-event"></i>
+                    Created {{ article.created_at|date:"d M Y" }}
+                </span>
+
+                {% if article.publisher %}
+                    <span>
+                        <i class="bi bi-building"></i>
+                        {{ article.publisher.name }}
+                    </span>
+                {% else %}
+                    <span class="badge bg-secondary">Independent</span>
+                {% endif %}
+            </div>
+
+            <!-- Status badges -->
+            <div class="mb-4">
+                {% if article.publisher %}
+
+                    {% if article.is_approved %}
+                        <span class="badge bg-success">
+                            <i class="bi bi-check-circle"></i> Published
+                        </span>
+                    {% endif %}
+
+                    {% if article.approved_by_editor %}
+                        <span class="badge bg-info text-dark ms-2">
+                            Approved by {{ article.approved_by_editor.username }}
+                        </span>
+                    {% endif %}
+                
+                {% endif %}
+            </div>
+
+            <hr>
+
+            <!-- Article Content -->
+            <div class="article-content fs-6 lh-lg">
+                {{ article.content|linebreaks }}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+
+        <a href="{% url 'news:readers_dashboard' %}"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+</div>
+{% endblock content %}

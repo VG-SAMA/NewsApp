@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block nav_heading %}
+    Publisher Details
+{% endblock nav_heading %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 95%;">
+
+    <!-- Publisher Info -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h3 class="card-title mb-2">
+                {{ pub.name }}
+            </h3>
+
+            <p class="text-muted mb-3">
+                {{ pub.description }}
+            </p>
+
+            <div class="small text-secondary">
+                Created: {{ pub.created_at|date:"M d, Y" }} ·
+                Last updated: {{ pub.updated_on|date:"M d, Y" }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Journalists -->
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Journalists
+                    </h5>
+
+                    {% if pub.journalists.exists %}
+                        <ul class="list-group list-group-flush">
+                            {% for journalist in pub.journalists.all %}
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="bi bi-person-circle me-2 text-primary"></i>
+                                    {{ journalist.username }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No journalists assigned to this publisher.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Editors -->
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-person-check-fill me-2"></i>
+                        Editors
+                    </h5>
+
+                    {% if pub.editors.exists %}
+                        <ul class="list-group list-group-flush">
+                            {% for editor in pub.editors.all %}
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="bi bi-person-circle me-2 text-success"></i>
+                                    {{ editor.username }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No editors assigned to this publisher.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hypoerlinks -->
+    <div class="mt-4 d-flex gap-2">
+        <a href="{% url 'news:all_publishers' %}" class="btn btn-dark">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+
+        <a href="{% url 'news:admins_update_publisher' pub.pk %}" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    </div>
+
+</div>
+{% endblock content %}
+
+
+{% comment %}
+
+{% endcomment %}

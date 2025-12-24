@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block nav_heading %} Create Article {% endblock nav_heading %}
+
+
+
+{% block content %}
+    {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Please fix the following errors:</strong>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ field|capfirst }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+        
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Create Article
+            </div>
+            <div class="card-body">
+                <form method="post" action="
+                    {% url 'news:editors_update_article' pk=form.instance.pk %}"
+                id="articleForm">
+                    {% csrf_token %}
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        {% bootstrap_field form.title %}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="mb-3">
+                        {% bootstrap_field form.content %}
+                    </div>
+
+               
+                    
+                    <!-- Approved -->
+                    <div class="form-check mb-3" id="approvedField">
+                        {{ form.is_approved }}
+                        <label class="form-check-label" for="{{ form.is_approved.id_for_label }}">
+                            Approved & Publish Article?
+                        </label>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="d-flex justify-content-between mt-4">
+                        
+                        <a href="{% url 'news:editors_dashboard' %}" class="btn btn-dark">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+
+                    
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Submit Article
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block nav_heading %}View Newsletter{% endblock nav_heading %}
+
+{% block content %}
+<div class="container my-5">
+
+    <div class="d-flex gap-2">
+    <a href="{% url 'news:editors_news_dashboard' %}" class="btn btn-dark">Back</a>
+    <a href="{% url 'news:editors_delete_news' pk=newsletter.id %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'news:editors_update_news' pk=newsletter.id %}" class="btn btn-info">Edit</a>
+</div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <!-- Newsletter Header -->
+            <header class="mb-5 text-center">
+                <h1 class="fw-bold">{{ newsletter.title }}</h1>
+
+                <p class="text-muted mb-1">
+                    By {{ newsletter.journalist.username }}
+                    {% if newsletter.publisher %}
+                        · {{ newsletter.publisher.name }}
+                    {% endif %}
+                </p>
+
+                <hr class="mt-4">
+            </header>
+
+            <!-- Newsletter Body -->
+            <section class="newsletter-body">
+
+                {% for article in newsletter.articles.all %}
+                    <article class="mb-5">
+
+                        <h3 class="fw-semibold mb-1">
+                            <a
+                                href="{% url 'news:journalists_view_article' pk=article.id %}"
+                                target="_blank"
+                                class="text-decoration-none text-dark"
+                            >
+                                {{ article.title }}
+                            </a>
+                        </h3>
+
+                        <p class="text-muted small mb-3">
+                            By {{ article.made_by_journalist.username }}
+                        </p>
+
+                        <p class="fs-6 lh-lg">
+                            {{ article.content|truncatewords:60 }}
+                        </p>
+
+                        {% if not forloop.last %}
+                            <hr class="my-5">
+                        {% endif %}
+
+                    </article>
+                {% empty %}
+                    <p class="text-center text-muted">
+                        No articles in this newsletter.
+                    </p>
+                {% endfor %}
+
+            </section>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

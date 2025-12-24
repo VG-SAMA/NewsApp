@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block nav_heading %}Manage Subscriptions{% endblock nav_heading %}
+
+{% block content %}
+<div class="container mt-5">
+    <a class="btn btn-dark" href="{% url 'news:readers_dashboard' %}">Back</a>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <p class="text-muted mb-4">
+                        Select the publishers and journalists you want to subscribe to.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- Publishers -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Publishers</label>
+                            <div class="d-flex flex-column gap-2 border rounded p-2"
+                                 style="max-height: 300px; overflow-y: auto;">
+                                {% for publisher in form.reader_publisher_subscriptions.field.queryset %}
+                                    <div class="p-2 border rounded d-flex align-items-center justify-content-between"
+                                         style="background-color: #f8f9fa;">
+                                        <div class="form-check mb-0">
+                                            <input type="checkbox"
+                                                   name="reader_publisher_subscriptions"
+                                                   value="{{ publisher.id }}"
+                                                   class="form-check-input me-2"
+                                                   id="publisher-{{ publisher.id }}"
+                                                   {% if publisher in form.instance.reader_publisher_subscriptions.all %}
+                                                       checked
+                                                   {% endif %}>
+                                            <label class="form-check-label mb-0"
+                                                   for="publisher-{{ publisher.id }}">
+                                                {{ publisher.name }}
+                                            </label>
+                                        </div>
+                                        <i class="bi bi-newspaper"></i>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Journalists -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Journalists</label>
+                            <div class="d-flex flex-column gap-2 border rounded p-2"
+                                 style="max-height: 300px; overflow-y: auto;">
+                                {% for journalist in form.reader_journalist_subscriptions.field.queryset %}
+                                    <div class="p-2 border rounded d-flex align-items-center justify-content-between"
+                                         style="background-color: #f8f9fa;">
+                                        <div class="form-check mb-0">
+                                            <input type="checkbox"
+                                                   name="reader_journalist_subscriptions"
+                                                   value="{{ journalist.id }}"
+                                                   class="form-check-input me-2"
+                                                   id="journalist-{{ journalist.id }}"
+                                                   {% if journalist in form.instance.reader_journalist_subscriptions.all %}
+                                                       checked
+                                                   {% endif %}>
+                                            <label class="form-check-label mb-0"
+                                                   for="journalist-{{ journalist.id }}">
+                                                {{ journalist.username }}
+                                            </label>
+                                        </div>
+                                        <i class="bi bi-person-badge"></i>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-save"></i> Save Subscriptions
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

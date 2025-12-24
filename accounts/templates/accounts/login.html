@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+     <div class="container">
+        <form method="post" action="{% url 'accounts:login' %}" id="loginForm">
+            {% csrf_token %}
+            {% bootstrap_form form layout='vertical' %}
+            <button type="submit" class="btn btn-primary">Login</button>
+            <br><br>
+            <p><a href="{% url 'accounts:register' %}">Create Account</a></p>
+        </form>
+        <a href="{% url 'accounts:forgot_password' %}" class="btn btn-danger">Forgot Password</a>
+    </div> 
+
+{% endblock content %}

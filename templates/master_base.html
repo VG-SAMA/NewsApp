@@ -1,0 +1,187 @@
+{% load django_bootstrap5 %}
+{% load static %}
+{% load extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} News {% endblock %}</title>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    {% block head_override %}{% endblock %}
+    
+
+</head>
+<body id="test">
+    
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+
+   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <div class=" card-body py-2 text-center">
+                    <span class="fw-semibold" style="color:white;padding-right:25px;">
+                        <i class="bi bi-person-circle"></i> {{ user.username }}
+                    </span>
+                </div>                
+            </li>               
+        {% endif %}
+        
+        {#  Manage Publishers  #}
+        {% if user|in_group:"Manage_Publishers" %}
+            <li class="nav-item me-3">
+                <a href="{% url 'news:all_publishers' %}"
+                class="btn btn-sm btn-outline-info">
+                    <i class="bi bi-collection"></i> All Publishers
+                </a>
+            </li>
+
+            <li class="nav-item me-3">
+                <a href="{% url 'news:admins_create_publisher' %}"
+                class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-plus-circle"></i> New Publisher
+                </a>
+            </li>
+            
+        {% endif %}
+
+        {#  journalists  #}
+        {% if user|in_group:"Journalist" %}
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:journalists_dashboard' %}"> <i class="bi bi-house-door"> </i>All Articles</a>
+            </li> 
+            
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:journalists_news_dashboard' %}"> <i class="bi bi-newspaper"> </i>All Newsletters</a>
+            </li>
+                            
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:journalists_create_article' %}"> <i class="bi bi-plus-lg"></i>New Article</a>
+            </li>
+            
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:journalists_create_newsletter' %}"> <i class="bi bi-plus-lg"></i>New Newsletter</a>
+            </li>
+
+        {% endif %}
+        
+        
+        {#  Editors  #}
+        {% if user|in_group:"Editor" %}
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:editors_dashboard' %}"> <i class="bi bi-house-door"> </i>All Articles</a>
+            </li> 
+            
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'news:editors_news_dashboard' %}"> <i class="bi bi-newspaper"> </i>All Newsletters</a>
+            </li>
+
+        {% endif %}
+
+
+        
+        {#  Readers  #}
+        {% if user|in_group:"reader" %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'news:readers_dashboard' %}"> <i class="bi bi-eye"> </i>Articles</a>
+            </li>              
+            
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'news:readers_news_dashboard' %}"> <i class="bi bi-eye"> </i>Newsletters</a>
+            </li>              
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'news:readers_manage_subscriptions' %}"> <i class="bi bi-clipboard-check-fill"> </i>Subscriptions</a>
+            </li>              
+
+        {% endif %}
+
+    </ul>
+    
+    <div class="topnav-centered">
+        <span>{% block nav_heading %}{% endblock nav_heading %}</span>
+    </div> 
+
+    {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="btn btn-outline-danger" href="{% url 'accounts:logout_user' %}" style="color:white;">
+                    <i class="bi bi-box-arrow-right" style="color: white;"></i> Logout
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+        <li class="nav-item">
+                <a class="btn btn-outline-success" href="{% url 'accounts:login' %}" style="color:white;">
+                    <i class="bi bi-box-arrow-right" style="color: white;"></i> Login
+                </a>
+            </li>
+    
+    
+    {% endif %}
+
+    </div>
+  </div>
+</nav>
+
+
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+
+<script>
+
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 3500);
+
+</script>
+
+</body>
+</html>
+
+
+
+{% comment %} 
+
+References:
+https://getbootstrap.com/docs/4.0/components/navs/#tabs-with-dropdowns
+https://www.w3schools.com/howto/howto_css_topnav_centered.asp
+https://stackoverflow.com/questions/21300647/make-an-alert-using-twitters-bootstrap-disappears-after-a-few-seconds
+https://www.geeksforgeeks.org/bootstrap/how-to-automatically-close-alerts-using-twitter-bootstrap/
+
+{% endcomment %}

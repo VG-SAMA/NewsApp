@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block nav_heading %} All Publishers {% endblock nav_heading %}   
+
+{% block content %}
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-body">
+    Hello, world! This is a toast message.
+    <div class="mt-2 pt-2 border-top">
+      <button type="button" class="btn btn-primary btn-sm">Take action</button>
+      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container mt-4" style="max-width: 95%;">
+    <div class="row g-4 justify-content-center">
+        {% for p in pubs %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ p.name }}</h5>
+                    <p class="card-text text-truncate" style="flex-grow: 1;">
+                        {{ p.description }}
+                    </p>
+                    <div class="mt-2">
+                        <a href="{% url 'news:admins_publisher_details' pk=p.id %}" class="btn btn-sm btn-outline-info me-2">View</a>
+                        <a href="{% url 'news:admins_update_publisher' pk=p.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                        <a href="{% url 'news:admins_delete_publisher' pk=p.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
+
+
+  
+{% comment %}
+References:
+https://www.youtube.com/watch?v=ggoWGsS6oaM
+
+{% endcomment %}

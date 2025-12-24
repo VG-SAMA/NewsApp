@@ -1,0 +1,155 @@
+from django.urls import path
+from . import views_reader
+from . import views_journalist
+from . import views_publishers
+from . import views_editors
+
+app_name = 'news'
+rdr = 'readers'
+journ = 'journalists'
+edt = 'editors'
+pub = 'admins'
+
+urlpatterns = [
+    path(
+        f'{pub}/create-publisher/',
+        views_publishers.create_publisher,
+        name=f'{pub}_create_publisher',
+    ),
+    path(
+        f'{pub}/publishers/',
+        views_publishers.read_publishers,
+        name='all_publishers',
+    ),
+    path(
+        f'{pub}/delete/<int:pk>/',
+        views_publishers.delete_publisher,
+        name=f'{pub}_delete_publisher',
+    ),
+    path(
+        f'{pub}/publisher-details/<int:pk>/',
+        views_publishers.publisher_details,
+        name=f'{pub}_publisher_details',
+    ),
+    path(
+        f'{pub}/update-publisher/<int:pk>/',
+        views_publishers.update_publisher,
+        name=f'{pub}_update_publisher',
+    ),
+    path(
+        f'{rdr}/dashboard/',
+        views_reader.get_all_articles,
+        name=f'{rdr}_dashboard',
+    ),
+    path(
+        f'{rdr}/view-article/<int:pk>/',
+        views_reader.view_article,
+        name=f'{rdr}_view_article',
+    ),
+    path(
+        f'{rdr}/newsletter-dashboard/',
+        views_reader.all_newsletters,
+        name=f'{rdr}_news_dashboard',
+    ),
+    path(
+        f'{rdr}/view-newsletter/<int:pk>/',
+        views_reader.view_newsletter,
+        name=f'{rdr}_view_newsletter',
+    ),
+    # Subsctiptions
+    path(
+        f'{rdr}/subscriptions/',
+        views_reader.manage_subscriptions,
+        name=f'{rdr}_manage_subscriptions',
+    ),
+    path(
+        f'{journ}/create-article/',
+        views_journalist.create_article,
+        name=f'{journ}_create_article',
+    ),
+    path(
+        f'{journ}/view-article/<int:pk>/',
+        views_journalist.view_article,
+        name=f'{journ}_view_article',
+    ),
+    path(
+        f'{journ}/dashboard/',
+        views_journalist.read_articles,
+        name=f'{journ}_dashboard',
+    ),
+    path(
+        f'{journ}/update-article/<int:pk>/',
+        views_journalist.update_article,
+        name=f'{journ}_update_article',
+    ),
+    path(
+        f'{journ}/delete-article/<int:pk>/',
+        views_journalist.delete_article,
+        name=f'{journ}_delete_article',
+    ),
+    path(
+        f'{journ}/create-newsletter/',
+        views_journalist.create_newsletter,
+        name=f'{journ}_create_newsletter',
+    ),
+    path(
+        f'{journ}/newsletter-dashboard/',
+        views_journalist.newsletter_dashboard,
+        name=f'{journ}_news_dashboard',
+    ),
+    path(
+        f'{journ}/view-newsletter/<int:pk>/',
+        views_journalist.view_newsletter,
+        name=f'{journ}_view_newsletter',
+    ),
+    path(
+        f'{journ}/delete-newsletter/<int:pk>/',
+        views_journalist.delete_newsletter,
+        name=f'{journ}_delete_news',
+    ),
+    path(
+        f'{journ}/update-newsletter/<int:pk>/',
+        views_journalist.update_newsletter,
+        name='journalists_update_newsletter',
+    ),
+    path(
+        f'{edt}/dashboard/',
+        views_editors.all_articles,
+        name=f'{edt}_dashboard',
+    ),
+    path(
+        f'{edt}/view-article/<int:pk>/',
+        views_editors.view_article,
+        name=f'{edt}_view_article',
+    ),
+    path(
+        f'{edt}/delete-article/<int:pk>/',
+        views_editors.delete_article,
+        name=f'{edt}_delete_article',
+    ),
+    path(
+        f'{edt}/update-article/<int:pk>/',
+        views_editors.update_article,
+        name=f'{edt}_update_article',
+    ),
+    path(
+        f'{edt}/newsletter-dashboard/',
+        views_editors.all_newsletters,
+        name=f'{edt}_news_dashboard',
+    ),
+    path(
+        f'{edt}/view-newsletter/<int:pk>/',
+        views_editors.view_newsletter,
+        name=f'{edt}_view_newsletter',
+    ),
+    path(
+        f'{edt}/delete-news/<int:pk>/',
+        views_editors.delete_newsletter,
+        name=f'{edt}_delete_news',
+    ),
+    path(
+        f'{edt}/update-newsletter/<int:pk>/',
+        views_editors.update_newsletter,
+        name=f'{edt}_update_news',
+    ),
+]

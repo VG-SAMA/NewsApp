@@ -1,0 +1,24 @@
+/* Card hover polish */
+.article-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+.article-preview {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 8;          
+    -webkit-line-clamp: 8;  
+    overflow: hidden;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.newsletter-body p {
+    text-align: justify;
+}
