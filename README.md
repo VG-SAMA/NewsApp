@@ -21,7 +21,7 @@ This project is a news platform built with Django, designed to allow readers, jo
 
 # Tech Stack
 - Backend: Django 5.x
-- Database: MySQL
+- Database: SQLite to work with docker
 - Frontend: Django Templates + Bootstrap 5
 - API: Django REST Framework
 - Authentication: Django custom user model with roles
@@ -266,3 +266,12 @@ Only one authenticated instance is created at app runtime (singleton pattern). T
 
 Please view a picture called Proof Of Suspension.PNG, to see the message at the bottom of the picture showing
 my account is currently suspended
+
+
+# Running with Docker
+- Build the Docker image:
+    Build the Docker image:
+- Run the Docker container:
+    Run the Docker container:
+    The container automatically runs migrations and starts the Django server.
+    Access the app at http://localhost:8000
