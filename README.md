@@ -30,7 +30,6 @@ This project is a news platform built with Django, designed to allow readers, jo
 # Installation
 ## Prerequisites
 - Python 3.11+
-- MySQL 8.x
 - pip (Python package manager)
 
 # Setting Up
@@ -48,7 +47,7 @@ This project is a news platform built with Django, designed to allow readers, jo
 - Install dependancies:
   - pip install -r requirements.txt
 
-# Update newsApp/settings.py database configuration to match your MySQL instance or MariaDB
+# Update newsApp/settings.py database configuration to match your MySQL instance or MariaDB if you are not running with docker
 1. MySQL Setup
     Install MySQL (if not installed):
         On Windows, download the installer from https://dev.mysql.com/downloads/mysql/
