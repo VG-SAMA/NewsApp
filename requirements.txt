@@ -96,7 +96,6 @@ imagesize==1.4.1
 Jinja2==3.1.6
 kombu==5.6.1
 MarkupSafe==3.0.3
-mysqlclient==2.2.7
 nodeenv==1.9.1
 oauthlib==3.3.1
 packaging==25.0
