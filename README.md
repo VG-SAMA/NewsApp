@@ -269,8 +269,9 @@ my account is currently suspended
 
 # Running with Docker
 - Build the Docker image:
-    Build the Docker image:
+    Run: docker run -p 8000:8000 news-app
+
 - Run the Docker container:
-    Run the Docker container:
+    Run: docker run -p 8000:8000 news-app
     The container automatically runs migrations and starts the Django server.
     Access the app at http://localhost:8000
