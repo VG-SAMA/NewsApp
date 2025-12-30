@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.tests &mdash; NewsApp 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NewsApp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NewsApp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.tests</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.tests</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">news.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Publisher</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIClient</span>
+
+<span class="n">CustomUser</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ArticleAPITests">
+<a class="viewcode-back" href="../../api.html#api.tests.ArticleAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArticleAPITests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="ArticleAPITests.setUp">
+<a class="viewcode-back" href="../../api.html#api.tests.ArticleAPITests.setUp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create users</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">journalist</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;journalist1&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;journalist1@example.com&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="s2">&quot;journalist&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;reader1&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;reader1@example.com&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="s2">&quot;reader&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Create publishers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher1</span> <span class="o">=</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Publisher 1&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher2</span> <span class="o">=</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Publisher 2&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Link journalist to publisher1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher1</span><span class="o">.</span><span class="n">journalists</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">)</span>
+
+        <span class="c1"># Subscribe reader to journalist and publisher1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">reader_journalist_subscriptions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">reader_publisher_subscriptions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher1</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># Create articles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">article_indep</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Independent Article&quot;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content indep&quot;</span><span class="p">,</span>
+            <span class="n">is_independant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_approved</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">made_by_journalist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">article_pub</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Publisher Article&quot;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content pub&quot;</span><span class="p">,</span>
+            <span class="n">is_independant</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_approved</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">publisher</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher1</span><span class="p">,</span>
+            <span class="n">made_by_journalist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">article_unsub_pub</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Other Publisher Article&quot;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">&quot;Content unsub&quot;</span><span class="p">,</span>
+            <span class="n">is_independant</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_approved</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">publisher</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">publisher2</span><span class="p">,</span>
+            <span class="n">made_by_journalist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Setup API client and login</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;reader1&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArticleAPITests.test_article_list_returns_subscribed_articles">
+<a class="viewcode-back" href="../../api.html#api.tests.ArticleAPITests.test_article_list_returns_subscribed_articles">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_article_list_returns_subscribed_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/articles/&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+
+        <span class="c1"># Reader should see independent + subscribed publisher articles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;Independent Article&quot;</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;Publisher Article&quot;</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="s2">&quot;Other Publisher Article&quot;</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ArticleAPITests.test_article_list_excludes_unsubscribed">
+<a class="viewcode-back" href="../../api.html#api.tests.ArticleAPITests.test_article_list_excludes_unsubscribed">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_article_list_excludes_unsubscribed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/articles/&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+
+        <span class="c1"># Article from publisher2 is not subscribed, should not appear</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">(</span><span class="s2">&quot;Other Publisher Article&quot;</span><span class="p">,</span> <span class="n">titles</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MySubscriptionsAPITests">
+<a class="viewcode-back" href="../../api.html#api.tests.MySubscriptionsAPITests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MySubscriptionsAPITests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="MySubscriptionsAPITests.setUp">
+<a class="viewcode-back" href="../../api.html#api.tests.MySubscriptionsAPITests.setUp">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create users</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">journalist</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;journalist1&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;journalist1@example.com&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="s2">&quot;journalist&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s2">&quot;reader1&quot;</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s2">&quot;reader1@example.com&quot;</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="s2">&quot;reader&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Subscribe reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">reader_journalist_subscriptions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># Setup API client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;reader1&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;pass1234&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MySubscriptionsAPITests.test_my_subscriptions_returns_correct_data">
+<a class="viewcode-back" href="../../api.html#api.tests.MySubscriptionsAPITests.test_my_subscriptions_returns_correct_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_my_subscriptions_returns_correct_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/my-subscriptions/&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;reader_journalist_subscriptions&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">journalist</span><span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Vidaal Basha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

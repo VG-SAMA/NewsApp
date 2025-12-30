@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>accounts.views &mdash; NewsApp 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d7bb8d4d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            NewsApp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NewsApp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">accounts.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for accounts.views</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Views for user registration, login, logout, and password management.</span>
+
+<span class="sd">Includes:</span>
+<span class="sd">- Registration and login views</span>
+<span class="sd">- Role-based redirection</span>
+<span class="sd">- Password reset workflow with token generation and email</span>
+<span class="sd">- Test page access control</span>
+
+<span class="sd">References:</span>
+<span class="sd">https://docs.djangoproject.com/en/5.2/ref/contrib/auth/#django.contrib.auth.models.User.set_password</span>
+<span class="sd">https://docs.djangoproject.com/en/5.2/topics/auth/default/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">HttpRequest</span><span class="p">,</span>
+    <span class="n">HttpResponseServerError</span><span class="p">,</span>
+    <span class="n">HttpResponseRedirect</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegisterForm</span><span class="p">,</span> <span class="n">LoginForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span> <span class="n">logout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">decorators.index</span><span class="w"> </span><span class="kn">import</span> <span class="n">manager_publishers_required</span><span class="p">,</span> <span class="n">journalist_required</span><span class="p">,</span> <span class="n">editor_required</span><span class="p">,</span> <span class="n">reader_required</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">index</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">secrets</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hashlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">sha1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">CustomUser</span><span class="p">,</span> <span class="n">ResetToken</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.core.mail</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmailMessage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractUser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="n">helpers</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">Helpers</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="home_page">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.home_page">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">home_page</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the URL for the registration page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;accounts:register&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="register">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.register">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle new user registration.</span>
+
+<span class="sd">    POST:</span>
+<span class="sd">        - Validate form data</span>
+<span class="sd">        - Create user</span>
+<span class="sd">        - Log the user in</span>
+<span class="sd">        - Redirect based on role</span>
+
+<span class="sd">    GET:</span>
+<span class="sd">        - Render empty registration form</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">helpers</span><span class="o">.</span><span class="n">clear_messages</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RegisterForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="c1"># Save user and log in immediately</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span>
+                <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Registration successful! You are now logged in.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">route_to</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Show form errors in Bootstrap alerts</span>
+            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">RegisterForm</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;accounts/register.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;form&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="login_user">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.login_user">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">login_user</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle user login.</span>
+
+<span class="sd">    POST:</span>
+<span class="sd">        - Authenticate username and password</span>
+<span class="sd">        - Log in user</span>
+<span class="sd">        - Redirect based on role</span>
+
+<span class="sd">    GET:</span>
+<span class="sd">        - Render empty login form</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">helpers</span><span class="o">.</span><span class="n">clear_messages</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+            <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">route_to</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Invalid username or password&#39;</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">LoginForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/login.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="logout_user">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.logout_user">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">logout_user</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Log the user out and redirect to login page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">logout</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;accounts:login&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="route_to">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.route_to">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">route_to</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Redirect user to appropriate dashboard based on role.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        - Redirect to publisher/admin creation for Manage_Publishers</span>
+<span class="sd">        - Redirect to readers, editors, or journalists dashboard</span>
+<span class="sd">        - Server error if role cannot be determined</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user_type</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Manage_Publishers&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;news:all_publishers&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">user_type</span> <span class="o">==</span> <span class="s1">&#39;reader&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;news:readers_dashboard&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">user_type</span> <span class="o">==</span> <span class="s1">&#39;editor&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;news:editors_dashboard&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">user_type</span> <span class="o">==</span> <span class="s1">&#39;journalist&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;news:journalists_dashboard&#39;</span><span class="p">)</span>
+
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseServerError</span><span class="p">(</span>
+            <span class="s1">&#39;Error 500: Internal Server Error. Sorry the server could not validate what your role is&#39;</span>
+        <span class="p">)</span>
+
+    <span class="n">logout_user</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;accounts:login&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="test_page">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.test_page">[docs]</a>
+<span class="nd">@login_required</span>
+<span class="c1"># @manager_publishers_required</span>
+<span class="c1"># @journalist_required</span>
+<span class="nd">@reader_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_page</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test page to verify decorator authorisation access.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span>
+        <span class="s1">&#39;accounts/test.html&#39;</span><span class="p">,</span>
+        <span class="p">{</span><span class="s1">&#39;msg&#39;</span><span class="p">:</span> <span class="s1">&#39;this is the test page.&#39;</span><span class="p">},</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="clear_messages">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.clear_messages">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clear_messages</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Function to clear the messages from request.&quot;&quot;&quot;</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">get_messages</span><span class="p">(</span><span class="n">request</span><span class="p">))</span></div>
+
+
+
+<span class="c1"># Emails, forgot password and tokens</span>
+<div class="viewcode-block" id="forgot_password_form">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.forgot_password_form">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">forgot_password_form</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render the forgot password form page.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/forgot_password.html&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_email">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.build_email">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_email</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="n">AbstractUser</span><span class="p">,</span> <span class="n">reset_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a password reset email for the given user.</span>
+
+<span class="sd">    Returns a Django EmailMessage object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Password Reset&#39;</span>
+    <span class="n">email_address</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+    <span class="n">domain</span> <span class="o">=</span> <span class="s1">&#39;vidaal702@gmail.com&#39;</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Hi </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s1"> here is the link to reset your password: </span><span class="si">{</span><span class="n">reset_url</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="p">[</span><span class="n">email_address</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">email</span></div>
+
+
+
+<div class="viewcode-block" id="generate_reset_url">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.generate_reset_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_reset_url</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="n">AbstractUser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a unique password reset URL for the user.</span>
+
+<span class="sd">    Saves a ResetToken instance with 5-minute expiry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">domain</span> <span class="o">=</span> <span class="s1">&#39;http://127.0.0.1:8000&#39;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">domain</span><span class="si">}</span><span class="s1">/accounts/reset_password/&#39;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_urlsafe</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+
+    <span class="n">expiry_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># creates the token and encodes it</span>
+    <span class="n">ResetToken</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+        <span class="n">token</span><span class="o">=</span><span class="n">sha1</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span>
+        <span class="n">expiry_date</span><span class="o">=</span><span class="n">expiry_date</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s1">/&#39;</span>
+    <span class="k">return</span> <span class="n">url</span></div>
+
+
+
+<div class="viewcode-block" id="send_password_reset_email">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.send_password_reset_email">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_password_reset_email</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle sending the password reset email.</span>
+
+<span class="sd">    Validates email exists and sends reset link, or shows error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">clear_messages</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">user_email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">user_email</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">user_email</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">user_email</span><span class="p">)</span>
+
+        <span class="c1"># calls methods to build and send reset link email</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">generate_reset_url</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">build_email</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s1">&#39;accounts/password_reset_info.html&#39;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s1">&#39;msg&#39;</span><span class="p">:</span> <span class="s1">&#39;Password reset email has been sent, please check your inbox&#39;</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+
+    <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Password was not found please try again&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;accounts:forgot_password&#39;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="reset_user_password">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.reset_user_password">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reset_user_password</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Render the password reset page after verifying the token.</span>
+
+<span class="sd">    Stores user ID and token in session for validation on password change.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># sha1(token.encode()).hexdigest()</span>
+
+        <span class="c1"># finds user token in db</span>
+        <span class="n">user_token</span> <span class="o">=</span> <span class="n">ResetToken</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">token</span><span class="o">=</span><span class="n">sha1</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">user_token</span><span class="o">.</span><span class="n">expiry_date</span> <span class="o">&lt;</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">():</span>
+            <span class="c1"># if user_token.expiry_date.replace(tzinfo=None) &lt; datetime.now(): # type: ignore</span>
+            <span class="n">user_token</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_token</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">pk</span>  <span class="c1"># type: ignore</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">user_token</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span>
+        <span class="n">request</span><span class="p">,</span> <span class="s1">&#39;accounts/password_reset.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">user_token</span><span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="change_user_password">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.change_user_password">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">change_user_password</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Update the user&#39;s password and save the user instance.&quot;&quot;&quot;</span>
+
+    <span class="c1"># find user and reset their password</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+    <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="reset_password">
+<a class="viewcode-back" href="../../accounts.html#accounts.views.reset_password">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reset_password</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">HttpRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change user password after validation.</span>
+
+<span class="sd">    Checks session for user_id and token, validates password confirmation,</span>
+<span class="sd">    updates password, and deletes the ResetToken.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+    <span class="n">password_conf</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password_conf&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user_id</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;Invalid or expired session. Please request a new password reset.&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;accounts:forgot_password&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">password</span><span class="p">:</span>
+        <span class="c1"># check password entries match each other</span>
+        <span class="k">if</span> <span class="n">password</span> <span class="o">==</span> <span class="n">password_conf</span><span class="p">:</span>
+            <span class="n">change_user_password</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+            <span class="n">ResetToken</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">token</span><span class="o">=</span><span class="n">sha1</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;accounts:login&#39;</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;accounts:password_reset&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;accounts:login&#39;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Vidaal Basha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
