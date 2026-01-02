@@ -18,7 +18,9 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="news.migrations package" href="news.migrations.html" />
+    <link rel="prev" title="manage module" href="manage.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,268 +42,101 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">news package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-news.admin">news.admin module</a></li>
-<li><a class="reference internal" href="#module-news.apps">news.apps module</a><ul>
-<li><a class="reference internal" href="#news.apps.NewsConfig"><code class="docutils literal notranslate"><span class="pre">NewsConfig</span></code></a><ul>
-<li><a class="reference internal" href="#news.apps.NewsConfig.name"><code class="docutils literal notranslate"><span class="pre">NewsConfig.name</span></code></a></li>
-<li><a class="reference internal" href="#news.apps.NewsConfig.ready"><code class="docutils literal notranslate"><span class="pre">NewsConfig.ready()</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NewsApp</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="accounts.html">accounts package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">api package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">news package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="news.migrations.html">news.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.admin">news.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.apps">news.apps module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.apps.NewsConfig"><code class="docutils literal notranslate"><span class="pre">NewsConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.forms">news.forms module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ArticleForm"><code class="docutils literal notranslate"><span class="pre">ArticleForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.EditorNewsletterForm"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm"><code class="docutils literal notranslate"><span class="pre">NewsletterForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm"><code class="docutils literal notranslate"><span class="pre">PublisherForm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ReaderSubscriptionForm"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.models">news.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.models.Article"><code class="docutils literal notranslate"><span class="pre">Article</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.models.Newsletter"><code class="docutils literal notranslate"><span class="pre">Newsletter</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.models.Publisher"><code class="docutils literal notranslate"><span class="pre">Publisher</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.signals">news.signals module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.signals.create_groups_and_assign_permissions"><code class="docutils literal notranslate"><span class="pre">create_groups_and_assign_permissions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.signals.email_publisher_article"><code class="docutils literal notranslate"><span class="pre">email_publisher_article()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.tests">news.tests module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.tests.EditorViewsTests"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.tests.JournalistViewsTests"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.tests.PublisherViewsTests"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.tests.ReaderViewsTests"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.urls">news.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.views_editors">news.views_editors module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.all_articles"><code class="docutils literal notranslate"><span class="pre">all_articles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.all_newsletters"><code class="docutils literal notranslate"><span class="pre">all_newsletters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.delete_article"><code class="docutils literal notranslate"><span class="pre">delete_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.delete_newsletter"><code class="docutils literal notranslate"><span class="pre">delete_newsletter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.helpers"><code class="docutils literal notranslate"><span class="pre">helpers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.update_article"><code class="docutils literal notranslate"><span class="pre">update_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.update_newsletter"><code class="docutils literal notranslate"><span class="pre">update_newsletter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_editors.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.views_journalist">news.views_journalist module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.create_article"><code class="docutils literal notranslate"><span class="pre">create_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.create_newsletter"><code class="docutils literal notranslate"><span class="pre">create_newsletter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.delete_article"><code class="docutils literal notranslate"><span class="pre">delete_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.delete_newsletter"><code class="docutils literal notranslate"><span class="pre">delete_newsletter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.helpers"><code class="docutils literal notranslate"><span class="pre">helpers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.newsletter_dashboard"><code class="docutils literal notranslate"><span class="pre">newsletter_dashboard()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.read_articles"><code class="docutils literal notranslate"><span class="pre">read_articles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.update_article"><code class="docutils literal notranslate"><span class="pre">update_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.update_newsletter"><code class="docutils literal notranslate"><span class="pre">update_newsletter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_journalist.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.views_publishers">news.views_publishers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_publishers.create_publisher"><code class="docutils literal notranslate"><span class="pre">create_publisher()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_publishers.delete_publisher"><code class="docutils literal notranslate"><span class="pre">delete_publisher()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_publishers.publisher_details"><code class="docutils literal notranslate"><span class="pre">publisher_details()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_publishers.read_publishers"><code class="docutils literal notranslate"><span class="pre">read_publishers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_publishers.update_publisher"><code class="docutils literal notranslate"><span class="pre">update_publisher()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news.views_reader">news.views_reader module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_reader.all_newsletters"><code class="docutils literal notranslate"><span class="pre">all_newsletters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_reader.get_all_articles"><code class="docutils literal notranslate"><span class="pre">get_all_articles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_reader.manage_subscriptions"><code class="docutils literal notranslate"><span class="pre">manage_subscriptions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_reader.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.views_reader.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-news">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="newsApp.html">newsApp package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter.html">twitter package</a></li>
 </ul>
 </li>
 </ul>
-</li>
-<li><a class="reference internal" href="#module-news.forms">news.forms module</a><ul>
-<li><a class="reference internal" href="#news.forms.ArticleForm"><code class="docutils literal notranslate"><span class="pre">ArticleForm</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.ArticleForm.Meta"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.ArticleForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ArticleForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.model</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.ArticleForm.base_fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.base_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ArticleForm.clean"><code class="docutils literal notranslate"><span class="pre">ArticleForm.clean()</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ArticleForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.declared_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ArticleForm.media"><code class="docutils literal notranslate"><span class="pre">ArticleForm.media</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.Meta"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.Meta</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.Meta.fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.Meta.model</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.base_fields"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.base_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.declared_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.EditorNewsletterForm.media"><code class="docutils literal notranslate"><span class="pre">EditorNewsletterForm.media</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm"><code class="docutils literal notranslate"><span class="pre">NewsletterForm</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.Meta"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.model</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.base_fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.base_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.clean"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.clean()</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.declared_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.NewsletterForm.media"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.media</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.PublisherForm"><code class="docutils literal notranslate"><span class="pre">PublisherForm</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.PublisherForm.Meta"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.PublisherForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.PublisherForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.model</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.PublisherForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.base_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.PublisherForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.declared_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.PublisherForm.media"><code class="docutils literal notranslate"><span class="pre">PublisherForm.media</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.Meta"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.Meta</span></code></a><ul>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.Meta.fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.Meta.model</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.base_fields"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.base_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.declared_fields</span></code></a></li>
-<li><a class="reference internal" href="#news.forms.ReaderSubscriptionForm.media"><code class="docutils literal notranslate"><span class="pre">ReaderSubscriptionForm.media</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.models">news.models module</a><ul>
-<li><a class="reference internal" href="#news.models.Article"><code class="docutils literal notranslate"><span class="pre">Article</span></code></a><ul>
-<li><a class="reference internal" href="#news.models.Article.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Article.DoesNotExist</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Article.MultipleObjectsReturned</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.NotUpdated"><code class="docutils literal notranslate"><span class="pre">Article.NotUpdated</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.approved_by_editor"><code class="docutils literal notranslate"><span class="pre">Article.approved_by_editor</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.approved_by_editor_id"><code class="docutils literal notranslate"><span class="pre">Article.approved_by_editor_id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.articles_included"><code class="docutils literal notranslate"><span class="pre">Article.articles_included</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.content"><code class="docutils literal notranslate"><span class="pre">Article.content</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.created_at"><code class="docutils literal notranslate"><span class="pre">Article.created_at</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.date_edited"><code class="docutils literal notranslate"><span class="pre">Article.date_edited</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.date_published"><code class="docutils literal notranslate"><span class="pre">Article.date_published</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Article.get_next_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.get_next_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Article.get_next_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Article.get_previous_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.get_previous_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Article.get_previous_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.id"><code class="docutils literal notranslate"><span class="pre">Article.id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.is_approved"><code class="docutils literal notranslate"><span class="pre">Article.is_approved</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.is_independant"><code class="docutils literal notranslate"><span class="pre">Article.is_independant</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.made_by_journalist"><code class="docutils literal notranslate"><span class="pre">Article.made_by_journalist</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.made_by_journalist_id"><code class="docutils literal notranslate"><span class="pre">Article.made_by_journalist_id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.objects"><code class="docutils literal notranslate"><span class="pre">Article.objects</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.publisher"><code class="docutils literal notranslate"><span class="pre">Article.publisher</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.publisher_id"><code class="docutils literal notranslate"><span class="pre">Article.publisher_id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.refresh_from_db"><code class="docutils literal notranslate"><span class="pre">Article.refresh_from_db()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.save_base"><code class="docutils literal notranslate"><span class="pre">Article.save_base()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.title"><code class="docutils literal notranslate"><span class="pre">Article.title</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.tracker"><code class="docutils literal notranslate"><span class="pre">Article.tracker</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Article.updated_on"><code class="docutils literal notranslate"><span class="pre">Article.updated_on</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.models.Newsletter"><code class="docutils literal notranslate"><span class="pre">Newsletter</span></code></a><ul>
-<li><a class="reference internal" href="#news.models.Newsletter.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Newsletter.DoesNotExist</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Newsletter.MultipleObjectsReturned</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.NotUpdated"><code class="docutils literal notranslate"><span class="pre">Newsletter.NotUpdated</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.articles"><code class="docutils literal notranslate"><span class="pre">Newsletter.articles</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.created_at"><code class="docutils literal notranslate"><span class="pre">Newsletter.created_at</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Newsletter.get_next_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.get_next_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Newsletter.get_next_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Newsletter.get_previous_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.get_previous_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Newsletter.get_previous_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.id"><code class="docutils literal notranslate"><span class="pre">Newsletter.id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.is_independant"><code class="docutils literal notranslate"><span class="pre">Newsletter.is_independant</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.journalist"><code class="docutils literal notranslate"><span class="pre">Newsletter.journalist</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.journalist_id"><code class="docutils literal notranslate"><span class="pre">Newsletter.journalist_id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.objects"><code class="docutils literal notranslate"><span class="pre">Newsletter.objects</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.publisher"><code class="docutils literal notranslate"><span class="pre">Newsletter.publisher</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.publisher_id"><code class="docutils literal notranslate"><span class="pre">Newsletter.publisher_id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.title"><code class="docutils literal notranslate"><span class="pre">Newsletter.title</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Newsletter.updated_on"><code class="docutils literal notranslate"><span class="pre">Newsletter.updated_on</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.models.Publisher"><code class="docutils literal notranslate"><span class="pre">Publisher</span></code></a><ul>
-<li><a class="reference internal" href="#news.models.Publisher.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Publisher.DoesNotExist</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Publisher.MultipleObjectsReturned</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.NotUpdated"><code class="docutils literal notranslate"><span class="pre">Publisher.NotUpdated</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.article_set"><code class="docutils literal notranslate"><span class="pre">Publisher.article_set</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.created_at"><code class="docutils literal notranslate"><span class="pre">Publisher.created_at</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.customuser_set"><code class="docutils literal notranslate"><span class="pre">Publisher.customuser_set</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.description"><code class="docutils literal notranslate"><span class="pre">Publisher.description</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.editors"><code class="docutils literal notranslate"><span class="pre">Publisher.editors</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.get_next_by_created_at"><code class="docutils literal notranslate"><span class="pre">Publisher.get_next_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.get_next_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Publisher.get_next_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.get_previous_by_created_at"><code class="docutils literal notranslate"><span class="pre">Publisher.get_previous_by_created_at()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.get_previous_by_updated_on"><code class="docutils literal notranslate"><span class="pre">Publisher.get_previous_by_updated_on()</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.id"><code class="docutils literal notranslate"><span class="pre">Publisher.id</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.journalists"><code class="docutils literal notranslate"><span class="pre">Publisher.journalists</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.name"><code class="docutils literal notranslate"><span class="pre">Publisher.name</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.newsletters_published"><code class="docutils literal notranslate"><span class="pre">Publisher.newsletters_published</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.objects"><code class="docutils literal notranslate"><span class="pre">Publisher.objects</span></code></a></li>
-<li><a class="reference internal" href="#news.models.Publisher.updated_on"><code class="docutils literal notranslate"><span class="pre">Publisher.updated_on</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.signals">news.signals module</a><ul>
-<li><a class="reference internal" href="#news.signals.create_groups_and_assign_permissions"><code class="docutils literal notranslate"><span class="pre">create_groups_and_assign_permissions()</span></code></a></li>
-<li><a class="reference internal" href="#news.signals.email_publisher_article"><code class="docutils literal notranslate"><span class="pre">email_publisher_article()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.tests">news.tests module</a><ul>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests</span></code></a><ul>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.setUp"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_all_articles_only_shows_editor_articles"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_all_articles_only_shows_editor_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_all_newsletters_only_shows_editor_newsletters"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_all_newsletters_only_shows_editor_newsletters()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_delete_article_post"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_delete_article_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_delete_newsletter_post"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_delete_newsletter_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_update_article_post"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_update_article_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_update_newsletter_post"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_update_newsletter_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_view_article_access"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_view_article_access()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_view_article_denied"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_view_article_denied()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.EditorViewsTests.test_view_newsletter_access"><code class="docutils literal notranslate"><span class="pre">EditorViewsTests.test_view_newsletter_access()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests</span></code></a><ul>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.setUp"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_create_article_get"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_create_article_get()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_create_article_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_create_article_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_create_newsletter_get"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_create_newsletter_get()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_create_newsletter_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_create_newsletter_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_delete_article_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_delete_article_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_delete_newsletter_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_delete_newsletter_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_newsletter_dashboard"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_newsletter_dashboard()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_read_articles"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_read_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_update_article_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_update_article_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_update_newsletter_post"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_update_newsletter_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_view_article"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_view_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.JournalistViewsTests.test_view_newsletter"><code class="docutils literal notranslate"><span class="pre">JournalistViewsTests.test_view_newsletter()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests</span></code></a><ul>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.setUp"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_create_publisher_get"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_create_publisher_get()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_create_publisher_post_duplicate_name"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_create_publisher_post_duplicate_name()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_create_publisher_post_valid"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_create_publisher_post_valid()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_delete_publisher_get"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_delete_publisher_get()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_delete_publisher_post"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_delete_publisher_post()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_publisher_details_existing"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_publisher_details_existing()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_publisher_details_nonexistent"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_publisher_details_nonexistent()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_read_publishers_list"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_read_publishers_list()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_read_publishers_with_query"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_read_publishers_with_query()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_update_publisher_get"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_update_publisher_get()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.PublisherViewsTests.test_update_publisher_post_valid"><code class="docutils literal notranslate"><span class="pre">PublisherViewsTests.test_update_publisher_post_valid()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests</span></code></a><ul>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.setUp"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.setUp()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_dashboard_search_query"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_dashboard_search_query()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_dashboard_shows_correct_articles"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_dashboard_shows_correct_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_manage_subscriptions_get_form"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_manage_subscriptions_get_form()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_manage_subscriptions_post_updates"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_manage_subscriptions_post_updates()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_newsletter_dashboard_shows_correct_newsletters"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_newsletter_dashboard_shows_correct_newsletters()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_view_article"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_view_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_view_article_404"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_view_article_404()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_view_newsletter"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_view_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.tests.ReaderViewsTests.test_view_newsletter_404"><code class="docutils literal notranslate"><span class="pre">ReaderViewsTests.test_view_newsletter_404()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.urls">news.urls module</a></li>
-<li><a class="reference internal" href="#module-news.views_editors">news.views_editors module</a><ul>
-<li><a class="reference internal" href="#news.views_editors.all_articles"><code class="docutils literal notranslate"><span class="pre">all_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.all_newsletters"><code class="docutils literal notranslate"><span class="pre">all_newsletters()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.delete_article"><code class="docutils literal notranslate"><span class="pre">delete_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.delete_newsletter"><code class="docutils literal notranslate"><span class="pre">delete_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.helpers"><code class="docutils literal notranslate"><span class="pre">helpers</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.update_article"><code class="docutils literal notranslate"><span class="pre">update_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.update_newsletter"><code class="docutils literal notranslate"><span class="pre">update_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_editors.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.views_journalist">news.views_journalist module</a><ul>
-<li><a class="reference internal" href="#news.views_journalist.create_article"><code class="docutils literal notranslate"><span class="pre">create_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.create_newsletter"><code class="docutils literal notranslate"><span class="pre">create_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.delete_article"><code class="docutils literal notranslate"><span class="pre">delete_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.delete_newsletter"><code class="docutils literal notranslate"><span class="pre">delete_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.helpers"><code class="docutils literal notranslate"><span class="pre">helpers</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.newsletter_dashboard"><code class="docutils literal notranslate"><span class="pre">newsletter_dashboard()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.read_articles"><code class="docutils literal notranslate"><span class="pre">read_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.update_article"><code class="docutils literal notranslate"><span class="pre">update_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.update_newsletter"><code class="docutils literal notranslate"><span class="pre">update_newsletter()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_journalist.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.views_publishers">news.views_publishers module</a><ul>
-<li><a class="reference internal" href="#news.views_publishers.create_publisher"><code class="docutils literal notranslate"><span class="pre">create_publisher()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_publishers.delete_publisher"><code class="docutils literal notranslate"><span class="pre">delete_publisher()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_publishers.publisher_details"><code class="docutils literal notranslate"><span class="pre">publisher_details()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_publishers.read_publishers"><code class="docutils literal notranslate"><span class="pre">read_publishers()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_publishers.update_publisher"><code class="docutils literal notranslate"><span class="pre">update_publisher()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news.views_reader">news.views_reader module</a><ul>
-<li><a class="reference internal" href="#news.views_reader.all_newsletters"><code class="docutils literal notranslate"><span class="pre">all_newsletters()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_reader.get_all_articles"><code class="docutils literal notranslate"><span class="pre">get_all_articles()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_reader.manage_subscriptions"><code class="docutils literal notranslate"><span class="pre">manage_subscriptions()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_reader.view_article"><code class="docutils literal notranslate"><span class="pre">view_article()</span></code></a></li>
-<li><a class="reference internal" href="#news.views_reader.view_newsletter"><code class="docutils literal notranslate"><span class="pre">view_newsletter()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-news">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -316,6 +151,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">NewsApp</a></li>
       <li class="breadcrumb-item active">news package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/news.rst.txt" rel="nofollow"> View page source</a>
@@ -2095,7 +1931,10 @@ checks are enforced at the listing level.</p>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="manage.html" class="btn btn-neutral float-left" title="manage module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="news.migrations.html" class="btn btn-neutral float-right" title="news.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
